@@ -1,0 +1,45 @@
+language: cpp
+
+compiler:
+  - gcc
+
+addons:
+  apt:
+    sources:
+      - boost-latest
+      - ubuntu-toolchain-r-test
+    packages:
+      - libboost1.55-all-dev
+      - gcc-4.8
+      - g++-4.8
+      - gfortran-4.8
+      - liblapack-dev
+      - libgmp3-dev
+      - libsuitesparse-dev
+      - libeigen3-dev
+
+install:
+    - export CXX="g++-4.8" CC="gcc-4.8" FC="gfortran-4.8"
+    - cd ..
+
+    - git clone https://github.com/OPM/opm-common.git
+    - git clone https://github.com/statoil-travis/opm-parser.git
+    - git clone https://github.com/statoil-travis/opm-material.git
+    - git clone https://github.com/OPM/opm-data.git
+
+    - cd opm-parser
+    - git checkout updated_travis
+    - cd ..
+
+    - cd opm-material
+    - git checkout travis
+    - cd ..
+
+    - opm-common/travis/build-opm-common.sh
+    - opm-parser/travis/clone-and-build-ert.sh
+    - opm-parser/travis/build-opm-parser.sh
+    - opm-material/travis/clone-and-build-dune-common.sh
+    - opm-core/travis/clone-and-build-dune-istl.sh
+    - opm-core/travis/clone-and-build-superlu.sh
+
+script: opm-core/travis/build-and-test-opm-core.sh
