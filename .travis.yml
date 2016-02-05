@@ -28,6 +28,7 @@ install:
     - git clone https://github.com/OPM/opm-data.git
 
     - cd opm-parser
+
     - git checkout updated_travis
     - cd ..
 
